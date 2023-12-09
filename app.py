@@ -11,8 +11,11 @@ uploaded_files = st.file_uploader("Choose Images", accept_multiple_files=True)
 
 if st.button('Convert to PDF'):
     if uploaded_files:
+        # Convert images to RGB mode
+        images = [Image.open(uploaded_file).convert('RGB') for uploaded_file in uploaded_files]
+
         # Convert images to PDF
-        pdf_bytes = img2pdf.convert([uploaded_file.read() for uploaded_file in uploaded_files])
+        pdf_bytes = img2pdf.convert([image.tobytes() for image in images])
 
         # Create a link to download the PDF
         st.download_button(
